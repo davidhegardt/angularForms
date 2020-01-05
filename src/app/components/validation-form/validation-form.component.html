@@ -1,0 +1,80 @@
+<form class="form-wrapper" [formGroup]="userForm">
+    <mat-form-field class="full-width">
+    <mat-select placeholder="Land" formControlName="country">
+        <mat-option *ngFor="let country of countries" [(value)]="country">
+            {{country}}
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput required placeholder="Förnamn" formControlName="firstName" />          
+    </mat-form-field>
+    <ng-container *ngIf="firstNameValidation.invalid && (firstNameValidation.dirty || firstNameValidation.touched)">
+        <ng-template *ngTemplateOutlet="nameValidationTemplate"></ng-template>
+    </ng-container> 
+
+    <mat-form-field class="full-width">
+        <input matInput required placeholder="Efternamn" formControlName="lastName" />             
+    </mat-form-field>
+    <ng-container *ngIf="lastNameValidation.invalid && (lastNameValidation.dirty || lastNameValidation.touched)">
+        <ng-template *ngTemplateOutlet="nameValidationTemplate"></ng-template>
+    </ng-container>  
+
+    <table class="full-width" cellspacing="0">
+        <tr>
+            <td>
+                <mat-form-field class="full-width">
+                    <input matInput required placeholder="Gatuaddress" formControlName="street" />                    
+                </mat-form-field>
+                <ng-container *ngIf="streetValidation.invalid && (streetValidation.dirty || streetValidation.touched)">
+                    <ng-template *ngTemplateOutlet="streetValidationTemplate"></ng-template>
+                </ng-container>
+            </td>
+            <td>
+                <mat-form-field class="full-width">
+                    <input matInput required placeholder="Postnummer" formControlName="zipCode" />                    
+                </mat-form-field>
+                <ng-container *ngIf="zipCodeValidation.invalid && (zipCodeValidation.dirty || zipCodeValidation.touched)">
+                    <ng-template *ngTemplateOutlet="zipCodeValidationTemplate"></ng-template>
+                </ng-container>
+            </td>
+            <td>
+                <mat-form-field class="full-width">
+                    <input matInput required placeholder="Stad" formControlName="city" />                    
+                </mat-form-field>
+                <ng-container *ngIf="cityValidation.invalid && (cityValidation.dirty || cityValidation.touched)">
+                    <ng-template *ngTemplateOutlet="cityValidationTemplate"></ng-template>
+                </ng-container>
+            </td>
+        </tr>
+    </table>
+
+
+</form>
+
+<ng-template #nameValidationTemplate>
+    <mat-error class="error-text" *ngIf="firstNameValidation.errors.required || lastNameValidation.errors.required">
+        name required
+    </mat-error>
+</ng-template>
+
+<ng-template #streetValidationTemplate>
+    <mat-error class="error-text" *ngIf="streetValidation.errors.required">
+        street required
+    </mat-error>
+</ng-template>
+
+<ng-template #cityValidationTemplate>
+    <mat-error class="error-text" *ngIf="cityValidation.errors.required">
+        city required
+    </mat-error>
+</ng-template>
+
+<ng-template #zipCodeValidationTemplate>
+    <mat-error class="error-text" *ngIf="zipCodeValidation.errors.pattern || zipCodeValidation.errors.minLenght">
+        invalid zip format
+    </mat-error>
+    <mat-error class="error-text" *ngIf="zipCodeValidation.errors.required">
+        zipcode required
+    </mat-error>
+</ng-template>
