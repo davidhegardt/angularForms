@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ValidationFormComponent } from './components/validation-form/validation-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import {
   MatButtonModule,
@@ -14,20 +15,24 @@ import {
   MatInputModule,
   MatSelectModule,
   MatSnackBarModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatSliderModule
 } from '@angular/material';
 import { PostFormComponent } from './components/post-form/post-form.component';
+import { DynamicSliderComponent } from './components/dynamic-slider/dynamic-slider.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ValidationFormComponent,
-    PostFormComponent
+    PostFormComponent,
+    DynamicSliderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
     HttpClientModule,
     MatButtonModule,
     MatFormFieldModule,
@@ -35,6 +40,7 @@ import { PostFormComponent } from './components/post-form/post-form.component';
     MatSelectModule,
     MatSnackBarModule,
     MatToolbarModule,
+    MatSliderModule,
     ReactiveFormsModule
   ],
   providers: [],

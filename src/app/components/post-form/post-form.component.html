@@ -1,15 +1,40 @@
-<div class="content">    
+<div class="content">
     <mat-toolbar color="primary">
         <mat-toolbar-row>
-          <span>Angular Form example</span>
+            <span>Angular Form example</span>
         </mat-toolbar-row>
     </mat-toolbar>
-<div class="form-wrapper">
-<app-validation-form [countries]="countries" (userPostModel)="userFormOutput($event)" ></app-validation-form>
-<div class="card-container">
-    <div class="card card-small" (click)="postForm()" tabindex="0">        
-      <span>Post</span>
+    <div class="form-wrapper">
+        <app-validation-form [countries]="countries" (userPostModel)="userFormOutput($event)"></app-validation-form>
+        <div class="card-container">
+            <div class="card card-small" (click)="postForm()" tabindex="0">
+                <span>Post</span>
+            </div>
+        </div>
+        <app-dynamic-slider [sliderInputData]="apartmentPriceSlider" (outputSum)="sliderOutputPrice($event)">
+        </app-dynamic-slider>
+        <app-dynamic-slider [sliderInputData]="downpaymentSlider" (outputSum)="sliderOutputDownPayment($event)">
+        </app-dynamic-slider>
+        <app-dynamic-slider [sliderInputData]="interestSlider" (outputSum)="sliderOutputInterest($event)">
+        </app-dynamic-slider>
+        <app-dynamic-slider [sliderInputData]="avgiftSlider" (outputSum)="sliderOutputAvgift($event)">
+        </app-dynamic-slider>
     </div>
+
+    <p>Ränta per månad (ink ränteavdrag) : {{interestMonth}}</p>
+    <p>Amortering: {{amorteringMonth}}</p>
+    <p [ngClass]="{'text-danger':belaningsGrad > 0.7,
+        'text-good':belaningsGrad < 0.7}">Belåningsgrad : {{belaningsGrad}}</p>
+    <h2>Månadkostnad : <ng-container *ngIf="!downPaymentError"> {{monthTotalCost}}</ng-container>
+    </h2>
+    <ng-container *ngIf="downPaymentError">
+        <ng-template *ngTemplateOutlet="costValidationTemplate"></ng-template>
+    </ng-container>
 </div>
-</div>
-</div>
+
+
+<ng-template #costValidationTemplate>
+    <mat-error>
+        För låg kontantinsats! minst {{minimumDownPayment}}kr krävs
+    </mat-error>
+</ng-template>

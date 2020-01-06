@@ -1,0 +1,9 @@
+<div class="header">{{labelHeader}}</div>
+<mat-slider step="{{tickvalue}}" tickInterval="{{tickvalue}}" min="{{minValue}}" max="{{maxValue}}"
+[(ngModel)]="currentValue" value="currentValue"
+    (input)="onInputChange($event)"></mat-slider>
+<mat-form-field appearance="outline">
+    <mat-label>Summa</mat-label>
+    <input matInput placeholder="Summa" [ngModel]="currentValueString" (ngModelChange)="onInputFieldChange($event)">
+</mat-form-field>
+kr
