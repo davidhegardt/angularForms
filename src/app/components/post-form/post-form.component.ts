@@ -19,14 +19,16 @@ export class PostFormComponent implements OnInit {
   apartmentModel : ApartmentFinanceModel;
   interestMonth: number;
   amorteringMonth: number;
-  belaningsGrad : number;
+  mortgageRate : number;
   monthTotalCost : number;
   apartmentPriceSlider : SliderData;
   downpaymentSlider : SliderData;
   interestSlider : SliderData;
-  avgiftSlider : SliderData;
+  housingPriceSlider : SliderData;
   downPaymentError: boolean = false;
   minimumDownPayment : number;
+  interestDeductionSum : number;
+  interestDeduction: boolean;
 
   constructor(private formService:FormService, public snackbar: MatSnackBar) { }
 
@@ -107,13 +109,27 @@ export class PostFormComponent implements OnInit {
       minValue : 0
     }
 
-    this.avgiftSlider = {
+    this.housingPriceSlider = {
       labelHeader : 'Avgift',
       startValue : this.apartmentModel.avgift,
       maxValue : 10000,
       minValue : 0,
       tickValue : 100
     }
+  }
+
+  slideChange(event : any){
+    this.interestDeduction = !this.interestDeduction
+    this.calcMonthlyCost();
+  }
+
+  calcinterestDeduction(interestYear : number){
+    this.interestDeductionSum = (interestYear * 0.3) / 12;
+    if(this.interestDeduction){
+      this.interestMonth = Math.round(this.interestMonth - this.interestDeductionSum);
+    } else {
+      this.interestDeductionSum = 0;
+    } 
   }
 
   calcMonthlyCost(){
@@ -123,33 +139,38 @@ export class PostFormComponent implements OnInit {
     
     this.interestMonth = Math.round(interestYear / 12);
     
-    let ranteAvdrag = (interestYear * 0.3) / 12;
-    this.interestMonth = Math.round(this.interestMonth - ranteAvdrag);
+    this.calcinterestDeduction(interestYear);
+    
+    this.mortgageRate = totalDebt / this.apartmentModel.apartmentPrice;
 
-    this.belaningsGrad = totalDebt / this.apartmentModel.apartmentPrice;
-    let amorteringYear;
+    let paymentYear = this.calcMortgageRate(totalDebt);
 
-    if(this.belaningsGrad > 0.85){
+    this.amorteringMonth = Math.round(paymentYear / 12);
+    this.monthTotalCost = this.amorteringMonth + this.apartmentModel.avgift + this.interestMonth;
+  }
+
+  calcMortgageRate(totalDebt: number): number{
+    let paymentYear;
+    if(this.mortgageRate > 0.85){
       this.downPaymentError = true;
       this.minimumDownPayment = this.calcDownPayment(this.apartmentModel.apartmentPrice);
     } else {
       this.downPaymentError = false;
     }
 
-    if(this.belaningsGrad >= 0.7){
-       amorteringYear = totalDebt * 0.02;
+    if(this.mortgageRate >= 0.7){
+       paymentYear = totalDebt * 0.02;
     }
 
-    if(this.belaningsGrad < 0.7){
-      amorteringYear = totalDebt * 0.01
+    if(this.mortgageRate < 0.7){
+      paymentYear = totalDebt * 0.01
     }
 
-    if(this.belaningsGrad < 0.5) {
-      amorteringYear = 0;
+    if(this.mortgageRate < 0.5) {
+      paymentYear = 0;
     }
 
-    this.amorteringMonth = Math.round(amorteringYear / 12);
-    this.monthTotalCost = this.amorteringMonth + this.apartmentModel.avgift + this.interestMonth;
+    return paymentYear;
   }
 
   calcMaxValue():number {

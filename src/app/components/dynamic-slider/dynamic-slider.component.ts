@@ -7,7 +7,7 @@ import { SliderData } from 'src/app/models/sliderData';
   templateUrl: './dynamic-slider.component.html',
   styleUrls: ['./dynamic-slider.component.scss']
 })
-export class DynamicSliderComponent implements OnInit {
+export class DynamicSliderComponent {
 
   constructor() { }
   currentValue : number;
@@ -19,6 +19,7 @@ export class DynamicSliderComponent implements OnInit {
   tickvalue: number;
   errorText: string;
   threshold : boolean = true;
+  sumText = "Summa";
 
   @Input() set sliderInputData(sliderData : SliderData){
     this.maxValue = sliderData.maxValue;
@@ -50,9 +51,6 @@ export class DynamicSliderComponent implements OnInit {
   
   @Input() set startValue(value: number){
     this.currentValue = value;
-  }
-
-  ngOnInit() {
   }
  
   onInputChange(event : MatSliderChange) {

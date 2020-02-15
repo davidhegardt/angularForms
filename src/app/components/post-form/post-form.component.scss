@@ -1,3 +1,10 @@
+$mybackground : darkslategrey; 
+$dangerColor : red;
+$goodColor: seagreen;
+$sectioncolor: aliceblue;
+$cardBordercolor: #eee;
+$cardBackgroundcolor: #fafafa;
+
 .content {
     display: flex;
     margin: 32px auto;    
@@ -21,8 +28,8 @@
 
   .card {
     border-radius: 4px;
-    border: 1px solid #eee;
-    background-color: #fafafa;
+    border: 1px solid $cardBordercolor;
+    background-color: $cardBackgroundcolor;
     height: 40px;
     width: 200px;
     margin: 0 8px 16px;
@@ -50,9 +57,38 @@
   }
 
   .text-danger{
-      color: red;
+      color: $dangerColor;
   }
 
   .text-good {
-      color: seagreen;
+      color: $goodColor;
   }
+
+ .flex-container {
+     display: flex;
+ }
+
+ .right-section {
+     width: 300px;
+     padding: 10px 15px 10px;
+     background: $sectioncolor;
+     border-radius: 4px;
+     border: 1px solid #eee;
+     background-color: #fafafa;
+     text-align: center;
+ }
+
+ .mat-card {
+     display: flex;
+ }
+
+
+
+ .main-color {
+     background:$mybackground;
+ }
+
+ .sumText {
+     color: $mybackground;
+     font-size: 60px;
+ }
